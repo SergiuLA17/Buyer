@@ -3,7 +3,7 @@ package com.example.buyer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication()
 public class BuyerApplication {
 
     public static void main(String[] args) {
