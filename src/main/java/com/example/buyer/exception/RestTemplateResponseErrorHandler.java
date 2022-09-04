@@ -22,15 +22,18 @@ public class RestTemplateResponseErrorHandler extends IOException implements Res
     @SneakyThrows
     @Override
     public void handleError(ClientHttpResponse httpResponse) {
-
         if (httpResponse.getStatusCode().series() == HttpStatus.Series.SERVER_ERROR) {
             if (httpResponse.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
-                logger.error(httpResponse.getStatusCode() + "\n Your request couldn't be processed. Contact the server administrator.");
+                logger.info(httpResponse.getStatusCode() + "Something wrong. Contact the server administrator.");
             }
         } else if (httpResponse.getStatusCode().series() == HttpStatus.Series.CLIENT_ERROR) {
             if (httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
-                logger.warn("Product not found!");
+                logger.error("Desired product not found");
             }
+            if (httpResponse.getStatusCode() == HttpStatus.BAD_REQUEST) {
+               logger.error("Wrong quantity value");
+            }
+
         }
     }
 }

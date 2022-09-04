@@ -1,49 +1,21 @@
 package com.example.buyer.service;
 
-
-import com.example.buyer.Url.UrlController;
-import com.example.buyer.service.RandomNameOfProduct.ArrayController;
-import com.example.buyer.service.RandomNumber.RandomNumber;
-import com.example.buyer.service.Request.CreateRestTemplate;
-import com.example.buyer.service.Request.RequestController;
-import com.example.buyer.service.Response.ResponseBody;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.example.buyer.print.LoggerService;
+import com.example.buyer.service.url.URLService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
-public class BuyerService implements iService {
+public class BuyerService implements iBuyerService {
     @Autowired
-    private RequestController sendRequestToMarket;
+    private RequestService requestService;
     @Autowired
-    private CreateRestTemplate createRestTemplate;
-    @Autowired
-    private UrlController url;
-    @Autowired
-    private ResponseBody responseFromMarket;
-    @Autowired
-    private ArrayController arrayOfNamesOfProducts;
-    @Autowired
-    private RandomNumber randomNumber;
+    private LoggerService logger;
 
-    public ResponseEntity<String> sendRequestToMarket(String name, int quantity) {
-        return sendRequestToMarket.send(url.useStorehouseUrl(name, quantity), createRestTemplate.create());
+    public ResponseEntity<?> sendRequest(String url, Object object) {
+        requestService.sendRequest(url, object);
+        logger.info(requestService.getResponse());
+        return requestService.getResponse();
     }
-
-    public Optional<JsonNode> getResponseFromMarket(ResponseEntity<String> response) throws JsonProcessingException {
-        return responseFromMarket.get(response);
-    }
-
-    public String getTheNameOfTheDesiredProducts() {
-        return arrayOfNamesOfProducts.get();
-    }
-
-    public int getRandomNumber(){ return randomNumber.get();
-    }
-
-
 }
